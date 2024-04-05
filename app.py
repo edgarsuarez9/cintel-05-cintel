@@ -59,7 +59,7 @@ with ui.sidebar(open="open"):
 
     ui.a(
         "GitHub App",
-        href="https://denisecase.github.io/cintel-05-cintel-basic/",
+        href="https://edgarsuarez9.github.io/cintel-05-cintel/",
         target="_blank",
     )
     ui.a("PyShiny", href="https://shiny.posit.co/py/", target="_blank")
