@@ -62,6 +62,12 @@ with ui.sidebar(open="open"):
         href="https://denisecase.github.io/cintel-05-cintel-basic/",
         target="_blank",
     )
+    ui.a("PyShiny", href="https://shiny.posit.co/py/", target="_blank")
+    ui.a(
+        "PyShiny Express",
+        href="https://shiny.posit.co/blog/posts/shiny-express/",
+        target="_blank",
+    )
 
     
 with ui.layout_columns():          
