@@ -5,9 +5,13 @@ from datetime import datetime
 from collections import deque
 import pandas as pd
 import plotly.express as px
-from shinywidgets import render_plotly
+from shinywidgets import render_plotly, render_widget
+from shinyswatch import theme
 from scipy import stats
+from ipyleaflet import Map
 from faicons import icon_svg
+
+theme.darkly
 
 
 UPDATE_INTERVAL_SECS: int = 3
@@ -18,7 +22,7 @@ reactive_value_wrapper = reactive.value(deque(maxlen=DEQUE_SIZE))
 @reactive.calc()
 def reactive_calc_combined():
     reactive.invalidate_later(UPDATE_INTERVAL_SECS)
-    temp = round(random.uniform(-18, -16), 1)
+    temp = round(random.uniform(35, 65), 1)
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     new_dictionary_entry = {"temp": temp, "timestamp": timestamp}
     reactive_value_wrapper.get().append(new_dictionary_entry)
@@ -28,16 +32,20 @@ def reactive_calc_combined():
     return deque_snapshot, df, latest_dictionary_entry
     
 
-ui.page_opts(title="PyShiny Express: Live Data with Value Card", fillable=True)
+ui.page_opts(title="Emporia Kansas: Live Data with Value Card", fillable=True)
 
 with ui.sidebar(open="open"):
 
-    ui.h2("Antarctic Explorer", class_="text-center")
+    ui.h2("Emporia Temperatures", class_="text-center")
 
     ui.p(
-        "A demonstration of real-time temperature readings in Antarctica.",
+        "A demonstration of real-time temperature readings in Emporia Kansas.",
         class_="text-center",
     )
+
+    @render_widget
+    def small_map(width="50%", height="200px"):
+        return Map(center=(38.4039, -96.1817), zoom=10)
 
     ui.hr()
 
@@ -56,9 +64,9 @@ with ui.sidebar(open="open"):
     )
 
     
-with ui.layout_columns():
+with ui.layout_columns():          
     with ui.value_box(
-        showcase=icon_svg("sun"),
+      showcase=icon_svg("sun"),
         theme="bg-gradient-blue-purple",
     ):
 
@@ -73,9 +81,13 @@ with ui.layout_columns():
         "warmer than usual"
         
 
-    with ui.card(full_screen=True):
-        ui.card_header("Current Date and Time")
+    with ui.value_box(
+      showcase=icon_svg("calendar"),
+        theme="bg-gradient-blue-purple",
+    ):
 
+        "Current Date and Time"
+           
         @render.text
         def display_time():
             """Get the latest reading and return a timestamp string"""
